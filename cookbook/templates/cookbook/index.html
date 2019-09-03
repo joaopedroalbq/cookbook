@@ -1,0 +1,115 @@
+{% extends "cookbook/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="mt-24 w-4/5 h-48 bg-orange-200 rounded-lg relative">
+        <img src="{% static "img/undraw_special_event.svg" %}" class="absolute banner-svg" width="250" height="250" alt="">
+        <div class="w-2/3 absolute banner-title">
+            <h1 class="orange-1 font-bold text-2xl">Plan the best meal !</h1>
+            <span class="banner-gray text-xs font-thin">FOOD is the ingredient that binds us together 💛</span>
+        </div>
+        <div class="absolute bottom-0 right-0 p-6">
+            <a class="text-sm orange-1 hover:underline" href="{% url 'recipe_create'%}">Create a recipe →</a>
+        </div>
+    </div>
+    <div class="mt-12 w-full">
+        <div class="flex justify-between w-4/5">
+            <h1 class="text-2xl">Recipes 🍲</h1>
+            <button class="flex-end rounded-full bg-orange-1 inline-flex items-center p-2 text-sm">
+                <i class="tiny material-icons">access_time</i>
+                <span class="mx-2">Latest</span>
+                <i class="tiny material-icons">keyboard_arrow_down</i>
+            </button>
+        </div>
+        <div class="mt-10 filter w-4/5">
+            <div class="flex justify-between" style="height: 120px;">
+                <div class="filter-icon rounded-full text-center mr-4 shadow-xl filter-active">
+                    <div class="rounded-full icon-all h-12 w-12"></div>
+                    <span class="text-xs font-bold">All</span>
+                    <input type="checkbox" name="all" checked class="hidden">
+                </div>
+                <div class="filter-icon rounded-full text-center mr-4 shadow-xl">
+                    <div class="rounded-full icon-pizza h-12 w-12"></div>
+                    <span class="text-xs font-bold">Pizza</span>
+                    <input type="checkbox" name="pizza" class="hidden">
+                </div>
+                <div class="filter-icon rounded-full text-center mr-4 shadow-xl">
+                    <div class="rounded-full icon-asian h-12 w-12"></div>
+                    <span class="text-xs font-bold">Asian</span>
+                    <input type="checkbox" name="asian" class="hidden">
+                </div>
+                <div class="filter-icon rounded-full text-center mr-4 shadow-xl">
+                    <div class="rounded-full icon-burgers h-12 w-12"></div>
+                    <span class="text-xs font-bold">Burgers</span>
+                    <input type="checkbox" name="burgers" class="hidden">
+                </div>
+                <div class="filter-icon rounded-full text-center mr-4 shadow-xl">
+                    <div class="rounded-full icon-barbecue h-12 w-12"></div>
+                    <span class="text-xs font-bold">BBQ</span>
+                    <input type="checkbox" name="barbecue" class="hidden">
+                </div>
+                <div class="filter-icon rounded-full text-center mr-4 shadow-xl">
+                    <div class="rounded-full icon-dessert h-12 w-12"></div>
+                    <span class="text-xs font-bold">Desserts</span>
+                    <input type="checkbox" name="barbecue" class="hidden">
+                </div>
+                <div class="filter-icon rounded-full text-center mr-4 shadow-xl">
+                    <div class="rounded-full icon-thai h-12 w-12"></div>
+                    <span class="text-xs font-bold">Thai</span>
+                    <input type="checkbox" name="thai" class="hidden">
+                </div>
+                <div class="filter-icon rounded-full text-center mr-4 shadow-xl">
+                    <div class="rounded-full icon-sushi h-12 w-12"></div>
+                    <span class="text-xs font-bold">Sushi</span>
+                    <input type="checkbox" name="sushi" class="hidden">
+                </div>
+                <div class="filter-icon rounded-full text-center mr-4 shadow-xl">
+                    <div class="rounded-full icon-other h-12 w-12"></div>
+                    <span class="text-xs font-bold">Others</span>
+                    <input type="checkbox" name="other" class="hidden">
+                </div>
+            </div>
+        </div>
+        <div class="recipe-list my-16 w-4/5">
+            <ul class="flex justify-around">
+                {% for recipe in recipes %}
+                <li>
+                    <a href="">
+                        <div class="overflow-hidden">
+                            <div class="relative list-image">
+                                <div class="inline-block absolute bottom-0 bg-gray-100 p-2 rounded-tr-lg text-sm font-bold">
+                                    <span>{{ recipe.time_from }}-{{ recipe.time_to }} min</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h4 class="font-extrabold">{{ recipe.name }}</h4>
+                            <div class="flex items-center justify-between w-2/5">
+                                <div class="flex items-center">
+                                    <i class="material-icons text-base mr-1">star_border</i>
+                                    <span>{{ recipe.rating }}</span>
+                                </div>
+                                <div class="gray">
+                                    <span>{{ recipe.category.name }}</span>
+                                    <span>·</span>
+                                    <span>$$</span>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </li>
+                {% endfor %}
+                <!-- <li>
+                    <a href="">
+                        <img src="https://duyt4h9nfnj50.cloudfront.net/resized/1540920096927-w550-7a.jpg" alt="">
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <img src="https://d1ralsognjng37.cloudfront.net/aed36363-ab4a-4475-9b98-5d40dfe7b395" alt="">
+                    </a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

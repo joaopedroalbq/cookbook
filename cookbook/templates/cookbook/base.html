@@ -1,0 +1,61 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "cookbook/head.html" %}
+
+<body>
+    <div class="container mx-auto px-32 pt-8">
+        <nav class="flex items-center justify-between flex-wrap">
+            <div class="flex items-center flex-shrink-0 text-black mr-6">
+                <a href="/" class="mr-4 w-10 h-10 logo"></a>
+                <!-- <a href="#" class="mr-4">
+                    <div class="h-px w-5 mb-1 bg-gray-900"></div>
+                    <div class="h-px w-5 bg-gray-900"></div>
+                </a> -->
+                <span class="font-semibold text-xl tracking-tight">Cookbook</span>
+            </div>
+            <div class="flex justify-between lg:w-3/4 xl:w-4/5">
+                <div class="w-4/5 lg:px-6 xl:px-12">
+                    <div class="relative">
+                      <span class="algolia-autocomplete w-full" style="position: relative; display: inline-block; direction: ltr;">
+                        <input id="docsearch" class="transition outline-none border border-transparent focus:bg-white focus:border-gray-300 placeholder-gray-500 rounded-lg bg-gray-100 py-2 pr-4 pl-10 block w-full appearance-none leading-normal ds-input text-sm font-thin" type="text" placeholder="Search">
+                      </span>
+                      <div class="pointer-events-none absolute inset-y-0 left-0 pl-4 flex items-center">
+                        <svg class="fill-current pointer-events-none text-gray-600 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path></svg>
+                      </div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-yellow-1 rounded-lg p-1 outline-none focus:outline-none" onclick="openNav()">
+                        <i class="align-middle text-md material-icons">restaurant_menu</i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidenav bg-gray-100">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="/">Home</a>
+            <a href="{% url 'recipe_list'%}">Recipes</a>
+            <a href="{% url 'ingredient_list'%}">Ingredients</a>
+            <a href="{% url 'category_list'%}">Categories</a>
+        </div>
+
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    <script>
+        function openNav() {
+            document.querySelector(".sidenav").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.querySelector(".sidenav").style.width = "0";
+        }
+    </script>
+</body>
+
+</html>

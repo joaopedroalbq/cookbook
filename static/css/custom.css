@@ -1,0 +1,205 @@
+body {
+    font-family: 'Quicksand', sans-serif;
+    color: rgb(47, 39, 18);
+    margin: 0;
+    padding: 0;
+}
+
+.logo {
+    background: url('https://media.licdn.com/dms/image/C4E0BAQG44HO6Yn5BPw/company-logo_200_200/0?e=2159024400&v=beta&t=jVjd1V19CdqQiTzA_SudL72hLkA3fphpz_MisCniDx0');
+    background-size: cover;
+    opacity: .85;
+}
+
+.banner-svg {
+    bottom: 7px;
+    right: 400.656;
+    left: 44px;
+}
+
+.banner-title {
+    right: 50%;
+    left: 50%;
+    top: 20%;
+}
+
+.orange-1 {
+    color: rgb(249, 109, 67);
+}
+
+.bg-orange-1 {
+    color: white;
+    background-color: rgb(249, 109, 67);
+}
+
+.banner-gray {
+    color: rgb(159, 154, 147);
+}
+
+.yellow-1 {
+    color: rgb(251, 213, 106);
+}
+
+.bg-yellow-1 {
+    background-color: rgb(251, 213, 106);
+}
+
+.border-yellow-1 {
+    border-color: rgb(251, 213, 106);
+}
+
+.hover-bg-yellow-1:hover {
+    background-color: rgb(251, 213, 106);
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: rgb(249, 109, 67);
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+.filter-icon {
+    padding: 8px;
+}
+
+.filter-icon div {
+    border: 1px solid rgba(159, 154, 147, .15);
+}
+
+.filter-icon:hover {
+    cursor: pointer;
+    transition: 0.5s;
+    background-color: rgb(251, 213, 106);
+}
+
+.filter-active {
+    background-color: rgb(251, 213, 106);
+}
+
+.filter-active div{
+    border: none;
+}
+
+.icon-all {
+    background: url('/static/img/food-icons.jpg');
+    background-size: 486px 386px;
+    background-position: 90.1% 71.5%;
+}
+
+.icon-pizza {
+    background: url('/static/img/food-icons.jpg');
+    background-size: 486px 386px;
+    background-position: 90.4% 56.5%;
+}
+
+.icon-asian {
+    background: url('/static/img/food-icons.jpg');
+    background-size: 486px 386px;
+    background-position: 9.8% 100%;
+}
+
+.icon-burgers {
+    background: url('/static/img/food-icons.jpg');
+    background-size: 486px 386px;
+    background-position: 67.2% 56.7%;
+}
+
+.icon-barbecue {
+    background: url('/static/img/food-icons.jpg');
+    background-size: 486px 386px;
+    background-position: 101.5% 71.5%;
+}
+
+.icon-dessert {
+    background: url('/static/img/food-icons.jpg');
+    background-size: 486px 386px;
+    background-position: 32.8% 70.7%;
+}
+
+.icon-thai {
+    background: url('/static/img/food-icons.jpg');
+    background-size: 486px 386px;
+    background-position: 44.3% 13.6%;
+}
+
+.icon-sushi {
+    background: url('/static/img/food-icons.jpg');
+    background-size: 524px 424px;
+    background-position: -0.5% 85%;
+}
+
+.icon-other {
+    background: url('/static/img/food-others.png'), white;
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+    background-position: 50% 50%;
+}
+
+.list-image {
+    border-radius: 16px;
+    height: 200px;
+    width: 344px;
+    background-image: url('https://d1ralsognjng37.cloudfront.net/3351c58b-b144-4fa6-be1d-8c763d721155');
+    background-size: cover;
+    background-position: center;
+}
+
+.gray {
+    color: rgb(192, 192, 192);
+}
+
+.step div {
+    background: #feebc8;
+    transition: 0.5s;
+}
+
+.step div.active {
+    transform: scale(1.2);
+    border: 6px solid #feebc8;
+    background: rgb(251, 213, 106);
+}
+
+.step div:after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 2px;
+    background: #feebc8;
+    left: 31px;
+    top: -32px;
+}
+
+#first-step:after {
+    content: none;
+}
+

@@ -1,0 +1,64 @@
+{% load staticfiles %}
+{% include "cookbook/head.html" %}
+
+<div class="flex h-full">
+    <div class="bg-yellow-1 flex-shrink-0">
+        <div class="m-4">
+            <a href="/" class="text-xs underline">Back to homepage</a>
+        </div>
+        <div class="flex items-center flex-shrink-0 text-black mt-24 mx-32">
+            <div class="bg-white border-white border-8 rounded-full bg-auto p-8 mr-4 logo"></div>
+            <span class="font-semibold text-2xl tracking-tight text-white">Cookbook</span>
+        </div>
+        <div class="mt-12 mx-32 progress">
+            <ul>
+                <li class="relative my-8 text-white flex items-center step">
+                    <div class="h-8 w-8 ml-4 mr-8 rounded-full active" id="first-step"></div>
+                    <span>How it looks like</span>
+                </li>
+                <li class="relative my-8 text-white flex items-center step">
+                    <div class="h-8 w-8 ml-4 mr-8 rounded-full opacity-50"></div>
+                    <span class="opacity-50">The ingredients</span>
+                </li>
+                <li class="relative my-8 text-white flex items-center step">
+                    <div class="h-8 w-8 ml-4 mr-8 rounded-full opacity-50"></div>
+                    <span class="opacity-50">Rate it</span>
+                </li>
+        </div>
+    </div>
+    <div class="flex-shrink-0 flex-grow h-full">
+        <div class="bg-orange-200 h-full relative">
+            <div class="my-0 mx-auto">
+                <h1 class="pt-6 text-3xl w-3/5 mx-auto font-bold">Yay, we love food! Tell us more about this secret recipe.</h1>
+            </div>
+            <form class="mt-12 w-3/5 mx-auto">
+                <fieldset class="flex">
+                    <div class="mb-12 flex items-end">
+                        <div>
+                            <label class="block mb-2" for="name">Name</label>
+                            <input class="p-2 text-sm rounded-sm" type="text" name="name" placeholder="Recipe's name">
+                        </div>
+                        <div class="mx-auto flex items-center">
+                            <div class="h-12 w-12 bg-white rounded-full flex items-center align-bottom mr-4">
+                                <i class="material-icons mx-auto">add_a_photo</i>
+                            </div>
+                            <span>Upload a photo</span>
+                        </div>
+                    </div>
+                    <div class="h-24 w-full">
+                        <span class="block mb-2">How long does it take to prepare it?</span>
+                        <div class="w-full h-16 bg-white flex justify-around items-center rounded">
+                            <button class="bg-orange-1 rounded py-0 px-4 h-12">0-25 min</button>
+                            <button class="rounded py-0 px-4 h-12">30-50 min</button>
+                            <button class="rounded py-0 px-4 h-12">1 hour +</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="flex justify-around py-4 bg-white absolute bottom-0 w-full">
+                <button class="px-8 py-3 rounded-full bg-white border border-yellow-1 hover:text-white hover-bg-yellow-1">Back</button>
+                <button class="px-8 py-3 rounded-full text-white bg-yellow-1">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
