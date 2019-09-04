@@ -4,6 +4,9 @@ from django.db import models
 class FoodCategory(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class Ingredient(models.Model):
     GRAM = 'G'
@@ -28,6 +31,9 @@ class Ingredient(models.Model):
     amount = models.IntegerField()
     cost = models.FloatField()
 
+    def __str__(self):
+        return self.name
+
 
 class Recipe(models.Model):
     name = models.CharField(max_length=100)
@@ -42,3 +48,6 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(Ingredient)
     time_from = models.SmallIntegerField()
     time_to = models.SmallIntegerField()
+
+    def __str__(self):
+        return self.name

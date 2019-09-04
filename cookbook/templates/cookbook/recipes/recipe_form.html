@@ -1,7 +1,7 @@
 {% load staticfiles %}
 {% include "cookbook/head.html" %}
 
-<div class="flex h-full">
+<div id="recipe-form" class="flex h-full">
     <div class="bg-yellow-1 flex-shrink-0">
         <div class="m-4">
             <a href="/" class="text-xs underline">Back to homepage</a>
@@ -13,16 +13,20 @@
         <div class="mt-12 mx-32 progress">
             <ul>
                 <li class="relative my-8 text-white flex items-center step">
-                    <div class="h-8 w-8 ml-4 mr-8 rounded-full active" id="first-step"></div>
-                    <span>How it looks like</span>
+                    <div class="h-8 w-8 ml-4 mr-8 rounded-full" id="first-step" :class="[currentStep == 1 ? 'active-step' : 'opacity-50']"></div>
+                    <span :class="[currentStep == 1 ? 'active-step' : 'opacity-50']">How it looks like</span>
                 </li>
                 <li class="relative my-8 text-white flex items-center step">
-                    <div class="h-8 w-8 ml-4 mr-8 rounded-full opacity-50"></div>
-                    <span class="opacity-50">The ingredients</span>
+                    <div class="h-8 w-8 ml-4 mr-8 rounded-full" :class="[currentStep == 2 ? 'active-step' : 'opacity-50']"></div>
+                    <span :class="[currentStep == 2 ? 'active-step' : 'opacity-50']">Cuisine</span>
                 </li>
                 <li class="relative my-8 text-white flex items-center step">
-                    <div class="h-8 w-8 ml-4 mr-8 rounded-full opacity-50"></div>
-                    <span class="opacity-50">Rate it</span>
+                    <div class="h-8 w-8 ml-4 mr-8 rounded-full" :class="[currentStep == 3 ? 'active-step' : 'opacity-50']"></div>
+                    <span :class="[currentStep == 3 ? 'active-step' : 'opacity-50']">The ingredients</span>
+                </li>
+                <li class="relative my-8 text-white flex items-center step">
+                    <div class="h-8 w-8 ml-4 mr-8 rounded-full" :class="[currentStep == 4 ? 'active-step' : 'opacity-50']"></div>
+                    <span :class="[currentStep == 4 ? 'active-step' : 'opacity-50']">Is it hard?</span>
                 </li>
         </div>
     </div>
@@ -31,34 +35,165 @@
             <div class="my-0 mx-auto">
                 <h1 class="pt-6 text-3xl w-3/5 mx-auto font-bold">Yay, we love food! Tell us more about this secret recipe.</h1>
             </div>
-            <form class="mt-12 w-3/5 mx-auto">
-                <fieldset class="flex">
-                    <div class="mb-12 flex items-end">
-                        <div>
-                            <label class="block mb-2" for="name">Name</label>
-                            <input class="p-2 text-sm rounded-sm" type="text" name="name" placeholder="Recipe's name">
-                        </div>
-                        <div class="mx-auto flex items-center">
-                            <div class="h-12 w-12 bg-white rounded-full flex items-center align-bottom mr-4">
-                                <i class="material-icons mx-auto">add_a_photo</i>
+            <form class="mt-12 w-3/5 mx-auto relative">
+                {% csrf_token %}
+                <transition name="fade">
+                    <fieldset class="absolute flex form-step w-full" v-show="currentStep == 1">
+                        <div class="mb-12 flex items-end">
+                            <div class="w-1/2">
+                                <label class="block mb-2" for="name">Name</label>
+                                <input class="p-2 text-sm rounded-sm w-48" type="text" name="name" placeholder="Recipe's name" v-model="name">
                             </div>
-                            <span>Upload a photo</span>
+                            <div class="mx-auto flex items-center">
+                                <div class="h-12 w-12 bg-white rounded-full flex items-center align-bottom mr-4">
+                                    <i class="material-icons mx-auto">add_a_photo</i>
+                                </div>
+                                <span>Upload a photo</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="h-24 w-full">
-                        <span class="block mb-2">How long does it take to prepare it?</span>
-                        <div class="w-full h-16 bg-white flex justify-around items-center rounded">
-                            <button class="bg-orange-1 rounded py-0 px-4 h-12">0-25 min</button>
-                            <button class="rounded py-0 px-4 h-12">30-50 min</button>
-                            <button class="rounded py-0 px-4 h-12">1 hour +</button>
+                        <div class="mb-10">
+                            <label for="description" class="block mb-2">Description</label>
+                            <textarea name="description" cols="30" rows="5" class="p-2 w-full" v-model="description"></textarea>
                         </div>
-                    </div>
-                </fieldset>
+                        <div class="h-24 w-full">
+                            <span class="block mb-2">How long does it take to prepare it?</span>
+                            <div class="w-full h-16 bg-white flex justify-around items-center rounded">
+                                <button type="button" class="rounded py-0 px-4 h-12" :class="{ 'active-time': time[0] }" @click="selectTime(0)">0-25 min</button>
+                                <button type="button" class="rounded py-0 px-4 h-12" :class="{ 'active-time': time[1] }" @click="selectTime(1)">30-50 min</button>
+                                <button type="button" class="rounded py-0 px-4 h-12" :class="{ 'active-time': time[2] }" @click="selectTime(2)">1 hour +</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </transition>
+                <transition name="fade">
+                    <fieldset class="absolute w-full mx-auto form-step" v-show="currentStep == 2">
+                        <div class="w-full bg-orange-200 flex flex-wrap justify-center">
+                            <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
+                                :class="[selectedCategory == 'Pizza' ? 'selected-grid-item' : '']"
+                                @click="selectCategory('Pizza')">
+                                <div class="rounded-full icon-pizza h-12 w-12 mx-auto"></div>
+                                <span>Pizza</span>
+                            </div>
+                            <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
+                                :class="[selectedCategory == 'Asian' ? 'selected-grid-item' : '']"
+                                @click="selectCategory('Asian')">
+                                <div class="rounded-full icon-asian h-12 w-12 mx-auto"></div>
+                                <span>Asian</span>
+                            </div>
+                            <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
+                                :class="[selectedCategory == 'Burgers' ? 'selected-grid-item' : '']"
+                                @click="selectCategory('Burgers')">
+                                <div class="rounded-full icon-burgers h-12 w-12 mx-auto"></div>
+                                <span>Burgers</span>
+                            </div>
+                            <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
+                                :class="[selectedCategory == 'BBQ' ? 'selected-grid-item' : '']"
+                                @click="selectCategory('BBQ')">
+                                <div class="rounded-full icon-barbecue h-12 w-12 mx-auto"></div>
+                                <span>BBQ</span>
+                            </div>
+                            <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
+                                :class="[selectedCategory == 'Desserts' ? 'selected-grid-item' : '']"
+                                @click="selectCategory('Desserts')">
+                                <div class="rounded-full icon-dessert h-12 w-12 mx-auto"></div>
+                                <span>Desserts</span>
+                            </div>
+                            <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
+                                :class="[selectedCategory == 'Thai' ? 'selected-grid-item' : '']"
+                                @click="selectCategory('Thai')">
+                                <div class="rounded-full icon-thai h-12 w-12 mx-auto"></div>
+                                <span>Thai</span>
+                            </div>
+                            <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
+                                :class="[selectedCategory == 'Sushi' ? 'selected-grid-item' : '']"
+                                @click="selectCategory('Sushi')">
+                                <div class="rounded-full icon-sushi h-12 w-12 mx-auto"></div>
+                                <span>Sushi</span>
+                            </div>
+                            <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
+                                :class="[selectedCategory == 'Others' ? 'selected-grid-item' : '']"
+                                @click="selectCategory('Others')">
+                                <div class="rounded-full icon-other h-12 w-12 mx-auto"></div>
+                                <span>Others</span>
+                            </div>
+                        </div>
+                    </fieldset>
+                </transition>
+                <transition name="fade">
+                    <fieldset class="absolute w-full mx-auto form-step" v-show="currentStep == 3">
+                            <div class="flex flex-wrap">
+                                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                    <label class="block mb-2" for="ingredients">
+                                        Pick an ingredient
+                                    </label>
+                                    <div class="relative">
+                                        {{ form.ingredients }}
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <ul>
+                                        <li v-for="ingredient in ingredients">
+                                            {{ ingredient }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                    </fieldset>
+                </transition>
+                <transition name="fade">
+                    <fieldset class="absolute mt-12 w-full mx-auto form-step" v-show="currentStep == 4">
+                        Difficulty...
+                    </fieldset>
+                </transition>
             </form>
             <div class="flex justify-around py-4 bg-white absolute bottom-0 w-full">
-                <button class="px-8 py-3 rounded-full bg-white border border-yellow-1 hover:text-white hover-bg-yellow-1">Back</button>
-                <button class="px-8 py-3 rounded-full text-white bg-yellow-1">Next</button>
+                <button class="px-8 py-3 rounded-full bg-white border border-yellow-1 hover:text-white hover-bg-yellow-1 focus:outline-none active:outline-none" @click="previousStep">Back</button>
+                <button class="px-8 py-3 rounded-full text-white bg-yellow-1 focus:outline-none active:outline-none" @click="nextStep">
+                    [[ currentStep < 4 ? 'Next' : 'Finish' ]]
+                </button>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+<script>
+    const app = new Vue({
+        el: '#recipe-form',
+        delimiters: ['[[', ']]'],
+        data: {
+            name: '',
+            description: '',
+            time: [true, false, false],
+            selectedCategory: '',
+            selectedIngredient: null,
+            ingredients: [],
+            formSteps: [1, 2, 3, 4],
+            currentStep: 1,
+        },
+        methods: {
+            selectTime(n) {
+                this.time = [false, false, false]
+                this.time[n] = true
+            },
+            selectCategory(c) {
+                this.selectedCategory = c
+            },
+            addIngredient() {
+                this.ingredients.push(this.selectedIngredient)
+            },
+            previousStep() {
+                if(this.currentStep > 1) this.currentStep--
+            },
+            nextStep() {
+                if(this.currentStep < 4) this.currentStep++
+            }
+        }
+    })
+
+</script>

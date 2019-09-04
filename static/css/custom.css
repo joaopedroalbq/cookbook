@@ -1,3 +1,7 @@
+button:focus, button:active, input:focus, input:active, textarea:focus, textarea:active {
+    outline-color: rgb(251, 213, 106);
+}
+
 body {
     font-family: 'Quicksand', sans-serif;
     color: rgb(47, 39, 18);
@@ -28,6 +32,11 @@ body {
 }
 
 .bg-orange-1 {
+    color: white;
+    background-color: rgb(249, 109, 67);
+}
+
+.active-time {
     color: white;
     background-color: rgb(249, 109, 67);
 }
@@ -183,8 +192,7 @@ body {
     transition: 0.5s;
 }
 
-.step div.active {
-    transform: scale(1.2);
+.step div.active-step {
     border: 6px solid #feebc8;
     background: rgb(251, 213, 106);
 }
@@ -203,3 +211,20 @@ body {
     content: none;
 }
 
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+opacity: 0;
+}
+
+.form-grid-item {
+    border: 2px solid #feebc8;
+    transition: 0.2s;
+}
+
+.selected-grid-item {
+    border-color: rgb(251, 213, 106);
+    transform: scale(1.1);
+}
