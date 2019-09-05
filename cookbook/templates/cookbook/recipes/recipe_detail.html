@@ -1,0 +1,27 @@
+{% extends "cookbook/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="mt-24 p-12 flex justify-between bg-orange-200 rounded-lg">
+        <h1 class="text-3xl">{{ recipe.name }}</h1>
+        <ul class="w-1/2 mx-auto my-auto">
+            <li class="p-4 flex align-middle mx-auto">
+                <i class="material-icons mr-2 orange-1">access_time</i>
+                <span>{{ recipe.get_time }}</span>
+            </li>
+            <li class="p-4 flex align-middle mx-auto">
+                <i class="material-icons mr-2 orange-1">person_outline</i>
+                <span>2 people</span>
+            </li>
+            <li class="p-4 flex align-middle mx-auto">
+                <i class="material-icons mr-2 orange-1">euro</i>
+                <span>{{ recipe.get_overral_cost }}</span>
+            </li>
+        </ul>
+        <img src="{{ recipe.image }}" alt="" class="rounded-lg">
+    </div>
+    <div class="-mt-8 rounded-full h-32 w-full bg-white p-8">
+        <h2 class="text-xl font-bold mb-4">Instructions</h2>
+        <p>{{ recipe.instructions }} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa corrupti, porro eius dolorum voluptatibus ipsam laudantium laboriosam quo aliquam rerum minus velit voluptatem, quam eligendi, officia itaque quisquam. Eius, assumenda.</p>
+    </div>
+{% endblock content %}

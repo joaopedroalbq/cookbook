@@ -1,0 +1,20 @@
+{% extends "cookbook/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="mt-12 w-full relative">
+        <h2 class="my-4 text-xl">Recipes</h2>
+        {% if recipes %}
+            {% include 'cookbook/recipes/recipe_list.html' %}
+        {% else %}
+            <p>No results.</p>
+        {% endif %}
+        <hr>
+        <h2 class="my-4 text-xl">Ingredients</h2>
+        {% if ingredients %}
+            {% include 'cookbook/ingredients/ingredient_list.html' %}
+        {% else %}
+            <p class="ml-4 text-sm">No results.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

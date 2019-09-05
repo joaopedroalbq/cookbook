@@ -1,0 +1,47 @@
+<ul class="flex flex-wrap justify-between">
+    {% for recipe in recipes %}
+        <li class="m-4 w-1/4">
+            <a href="{% url 'recipe_details' pk=recipe.id %}">
+                <div class="overflow-hidden">
+                    <div class="relative">
+                        <img src="{{ recipe.image }}" alt="">
+                        <div class="inline-block absolute bottom-0 bg-gray-100 p-2 rounded-tr-lg text-sm font-bold">
+                            <span>{{ recipe.get_time }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <h4 class="font-extrabold">{{ recipe.name }}</h4>
+                    <div class="flex items-center justify-between w-full">
+                        <div class="flex items-center">
+                            {% if recipe.difficulty == 1 %}
+                                <i class="material-icons text-base mr-1 text-green-500">signal_cellular_alt</i>
+                                <span class="text-xs">Easy</span>
+                            {% elif recipe.difficulty == 2 %}
+                                <i class="material-icons text-base mr-1 text-yellow-500">signal_cellular_alt</i>
+                                <span class="text-xs">Medium</span>
+                            {% elif recipe.difficulty == 3 %}
+                                <i class="material-icons text-base mr-1 text-red-500">signal_cellular_alt</i>
+                                <span class="text-xs">Hard</span>
+                            {% elif recipe.difficulty == 4 %}
+                                <i class="material-icons text-base mr-1 text-black">signal_cellular_alt</i>
+                                <span class="text-xs">Expert</span>
+                            {% endif %}
+                        </div>
+                        <div class="gray">
+                            <span>{{ recipe.category.name }}</span>
+                            <span>·</span>
+                            {% if recipe.get_overral_cost <= 10 %}
+                                <span>$</span>
+                            {% elif recipe.get_overral_cost > 10 and recipe.get_overral_cost < 30 %}
+                                <span>$$</span>
+                            {% elif recipe.get_overral_cost > 30 %}
+                                <span>$$$</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+    {% endfor %}
+</ul>

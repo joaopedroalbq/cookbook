@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
 
     path('', views.index, name='index_page'),
-
+    path('search', views.search, name='search_view'),
 
     # Recipes
     path('recipes', views.RecipeList.as_view(), name='recipe_list'),
@@ -21,10 +21,4 @@ urlpatterns = [
     path('ingredients/<int:pk>/update', views.IngredientUpdate.as_view(), name='ingredient_update'),
     path('ingredients/<int:pk>/delete', views.IngredientDelete.as_view(), name='ingredient_delete'),
 
-    # Categories
-    path('categories', views.CategoryList.as_view(), name='category_list'),
-    path('categories/<int:pk>', views.CategoryDetail.as_view(), name='category_details'),
-    path('categories/create', views.CategoryCreate.as_view(), name='category_create'),
-    path('categories/<int:pk>/update', views.CategoryUpdate.as_view(), name='category_update'),
-    path('categories/<int:pk>/delete', views.CategoryDelete.as_view(), name='category_delete'),
 ]

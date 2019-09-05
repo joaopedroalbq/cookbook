@@ -1,0 +1,22 @@
+  {% if search_recipes or search_ingredients %}
+    <ul>
+    {% for search_recipe in search_recipes %}
+      <li class="underline search-result">
+        <a href="{% url 'recipe_details' pk=search_recipe.id %}">
+          {{ search_recipe.name }}
+          <span class="absolute right-0 text-xs p-1">{{ search_recipe.category }}</span>
+        </a>
+      </li>
+    {% endfor %}
+    {% for search_ingredient in search_ingredients %}
+      <li class="underline search-result">
+        <a href="{% url 'ingredient_details' pk=search_ingredient.id %}">
+          {{ search_ingredient.name }}
+          <span class="absolute right-0 text-xs p-1">Ingredient</span>
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    <p>No results.</p>
+  {% endif %}

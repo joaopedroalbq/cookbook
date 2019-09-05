@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 from .models import Recipe, Ingredient, FoodCategory
 
@@ -14,10 +16,30 @@ def index(request):
     categories = FoodCategory.objects.all()
     ingredients = Ingredient.objects.all()
     recipes = Recipe.objects.all()
-    print(categories)
-    print(ingredients)
-    print(recipes)
+    # print(categories)
+    # print(ingredients)
+    # print(recipes)
     return render(request, 'cookbook/index.html', {'recipes': recipes})
+
+
+def search(request):
+    is_json = request.GET.get('json')
+    search_parameter = request.GET.get('q')
+    recipes = Recipe.objects.filter(name__icontains=search_parameter)
+    ingredients = Ingredient.objects.filter(name__icontains=search_parameter)
+
+    if is_json == 'true':
+        html = render_to_string(
+            template_name='cookbook/search_results_partial.html',
+            context={'search_recipes': recipes, 'search_ingredients': ingredients}
+        )
+
+        data_dict = {"html_from_view": html}
+
+        return JsonResponse(data=data_dict, safe=False)
+
+    return render(request, 'cookbook/search_results.html', {'recipes': recipes, 'ingredients': ingredients})
+
 
 
 # Recipes
@@ -33,6 +55,7 @@ class RecipeDelete(DeleteView):
 
 class RecipeDetail(DetailView):
     model = Recipe
+    template_name = 'cookbook/recipes/recipe_detail.html'
 
 
 class RecipeList(ListView):
@@ -42,7 +65,7 @@ class RecipeList(ListView):
 
 class RecipeUpdate(UpdateView):
     model = Recipe
-
+    template_name = 'cookbook/recipes/recipe_form.html'
 
 # Ingredients
 
@@ -56,6 +79,7 @@ class IngredientDelete(DeleteView):
 
 class IngredientDetail(DetailView):
     model = Ingredient
+    template_name = 'cookbook/ingredients/ingredient_detail.html'
 
 
 class IngredientList(ListView):
@@ -64,26 +88,3 @@ class IngredientList(ListView):
 
 class IngredientUpdate(UpdateView):
     model = Ingredient
-
-
-# Categories
-
-
-class CategoryCreate(CreateView):
-    model = FoodCategory
-
-
-class CategoryDelete(DeleteView):
-    model = FoodCategory
-
-
-class CategoryDetail(DetailView):
-    model = FoodCategory
-
-
-class CategoryList(ListView):
-    model = FoodCategory
-
-
-class CategoryUpdate(UpdateView):
-    model = FoodCategory
