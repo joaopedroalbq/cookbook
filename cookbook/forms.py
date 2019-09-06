@@ -10,8 +10,7 @@ class RecipeForm(ModelForm):
         widget=Select(
             attrs={
                 'class': 'block appearance-none w-full py-3 px-4 pr-8 rounded bg-white',
-                'v-model': 'selectedIngredient',
-                '@change': 'addIngredient'
+                'v-model': 'selectedIngredient'
             }
         )
     )

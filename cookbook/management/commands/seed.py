@@ -77,6 +77,9 @@ class Command(BaseCommand):
         default_recipe = {
                 'name': 'Marguerita',
                 'image': 'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fcdn-image.myrecipes.com%2Fsites%2Fdefault%2Ffiles%2Fstyles%2Fmedium_2x%2Fpublic%2Fimage%2Frecipes%2Foh%2F12%2Fmozzarella-and-basil-pizza-oh-x.jpg%3Fitok%3D3jn_M-VX&w=450&c=sc&poi=face&q=85',
+                'description': 'An easy pizza recipe with unbeatable flavor!',
+                'instructions': 'This margherita pizza recipe begins with homemade pizza dough. Top with fresh mozzarella and tomatoes, then finish it off with garden-fresh basil.',
+                'servings': 4,
                 'difficulty': 1,
                 'time': 2,
                 'category': FoodCategory.objects.get(name='Pizza'),
@@ -86,6 +89,9 @@ class Command(BaseCommand):
             r = Recipe(
                 name=default_recipe['name'],
                 image=default_recipe['image'],
+                description=default_recipe['description'],
+                instructions=default_recipe['instructions'],
+                servings=default_recipe['servings'],
                 difficulty=default_recipe['difficulty'],
                 time=default_recipe['time'],
                 category=default_recipe['category'],

@@ -46,7 +46,7 @@ def search(request):
 
 class RecipeCreate(CreateView):
     form_class = RecipeForm
-    template_name = 'cookbook/recipes/recipe_form.html'
+    template_name = 'cookbook/recipes/recipe_create.html'
 
 
 class RecipeDelete(DeleteView):
@@ -64,8 +64,8 @@ class RecipeList(ListView):
 
 
 class RecipeUpdate(UpdateView):
-    model = Recipe
-    template_name = 'cookbook/recipes/recipe_form.html'
+    form_class = RecipeForm
+    template_name = 'cookbook/recipes/recipe_edit.html'
 
 # Ingredients
 
@@ -80,6 +80,20 @@ class IngredientDelete(DeleteView):
 class IngredientDetail(DetailView):
     model = Ingredient
     template_name = 'cookbook/ingredients/ingredient_detail.html'
+
+    def get(self, request, *args, **kwargs):
+        is_json = request.GET.get('json')
+        if is_json == 'true':
+            ingredient = Ingredient.objects.get(id=self.kwargs['pk'])
+            ingredient_data = {
+                'id': ingredient.id,
+                'name': ingredient.name,
+                'unit': ingredient.unit,
+                'amount': ingredient.amount,
+                'cost': ingredient.cost
+            }
+            return JsonResponse(data=ingredient_data)
+        return super(IngredientDetail, self).get(request, *args, **kwargs)
 
 
 class IngredientList(ListView):

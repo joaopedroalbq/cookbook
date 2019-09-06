@@ -56,6 +56,9 @@ class Recipe(models.Model):
     ]
     name = models.CharField(max_length=100)
     image = models.URLField(max_length=300)
+    description = models.CharField(max_length=300, blank=True)
+    servings = models.SmallIntegerField()
+    instructions = models.CharField(max_length=500, blank=True)
     difficulty = models.IntegerField(choices=DIFFICULTY_CHOICES)
     category = models.ForeignKey(
         FoodCategory,
@@ -76,11 +79,15 @@ class Recipe(models.Model):
         return self.name
 
     def get_time(self):
-        return self.TIME_CHOICES[self.time][1]
+        return self.TIME_CHOICES[self.time-1][1]
+
+    def get_ingredients_usage(self):
+        return RecipeIngredient.objects.filter(recipe=self, ingredient__in=self.ingredients.all())
     
     def get_overral_cost(self):
-        ingredients_used = RecipeIngredient.objects.all()
-        return sum([i.get_cost() for i in ingredients_used], 0)
+        ingredients_used = RecipeIngredient.objects.filter(recipe=self, ingredient__in=self.ingredients.all())
+        cost_sum = sum([i.get_cost() for i in ingredients_used], 0)
+        return round(cost_sum, 2)
 
 
 class RecipeIngredient(models.Model):

@@ -45,10 +45,13 @@
                                 <input class="p-2 text-sm rounded-sm w-48" type="text" name="name" placeholder="Recipe's name" v-model="name">
                             </div>
                             <div class="mx-auto flex items-center">
-                                <div class="h-12 w-12 bg-white rounded-full flex items-center align-bottom mr-4">
-                                    <i class="material-icons mx-auto">add_a_photo</i>
+                                <div>
+                                    <label class="block mb-2 flex" for="image">
+                                        <span>Add a photo</span>
+                                        <i class="material-icons ml-2">add_a_photo</i>
+                                    </label>
+                                    <input class="p-2 text-sm rounded-sm w-48" type="url" name="image" placeholder="Image URL" v-model="image">
                                 </div>
-                                <span>Upload a photo</span>
                             </div>
                         </div>
                         <div class="mb-10">
@@ -58,9 +61,9 @@
                         <div class="h-24 w-full">
                             <span class="block mb-2">How long does it take to prepare it?</span>
                             <div class="w-full h-16 bg-white flex justify-around items-center rounded">
-                                <button type="button" class="rounded py-0 px-4 h-12" :class="{ 'active-time': time[0] }" @click="selectTime(0)">0-25 min</button>
-                                <button type="button" class="rounded py-0 px-4 h-12" :class="{ 'active-time': time[1] }" @click="selectTime(1)">30-50 min</button>
-                                <button type="button" class="rounded py-0 px-4 h-12" :class="{ 'active-time': time[2] }" @click="selectTime(2)">1 hour +</button>
+                                <button type="button" class="rounded py-0 px-4 h-12" :class="[ time == 1 ? 'active-time' : '' ]" @click="time = 1">0-25 min</button>
+                                <button type="button" class="rounded py-0 px-4 h-12" :class="[ time == 2 ? 'active-time' : '' ]" @click="time = 2">30-50 min</button>
+                                <button type="button" class="rounded py-0 px-4 h-12" :class="[ time == 3 ? 'active-time' : '' ]" @click="time = 3">1 hour +</button>
                             </div>
                         </div>
                     </fieldset>
@@ -70,49 +73,49 @@
                         <div class="w-full bg-orange-200 flex flex-wrap justify-center">
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
                                 :class="[selectedCategory == 'Pizza' ? 'selected-grid-item' : '']"
-                                @click="selectCategory('Pizza')">
+                                @click="selectedCategory = 'Pizza'">
                                 <div class="rounded-full icon-pizza h-12 w-12 mx-auto"></div>
                                 <span>Pizza</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
                                 :class="[selectedCategory == 'Asian' ? 'selected-grid-item' : '']"
-                                @click="selectCategory('Asian')">
+                                @click="selectedCategory = 'Asian'">
                                 <div class="rounded-full icon-asian h-12 w-12 mx-auto"></div>
                                 <span>Asian</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
                                 :class="[selectedCategory == 'Burgers' ? 'selected-grid-item' : '']"
-                                @click="selectCategory('Burgers')">
+                                @click="selectedCategory = 'Burgers'">
                                 <div class="rounded-full icon-burgers h-12 w-12 mx-auto"></div>
                                 <span>Burgers</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
                                 :class="[selectedCategory == 'BBQ' ? 'selected-grid-item' : '']"
-                                @click="selectCategory('BBQ')">
+                                @click="selectedCategory = 'BBQ'">
                                 <div class="rounded-full icon-barbecue h-12 w-12 mx-auto"></div>
                                 <span>BBQ</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
                                 :class="[selectedCategory == 'Desserts' ? 'selected-grid-item' : '']"
-                                @click="selectCategory('Desserts')">
+                                @click="selectedCategory = 'Desserts'">
                                 <div class="rounded-full icon-dessert h-12 w-12 mx-auto"></div>
                                 <span>Desserts</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
                                 :class="[selectedCategory == 'Thai' ? 'selected-grid-item' : '']"
-                                @click="selectCategory('Thai')">
+                                @click="selectedCategory = 'Thai'">
                                 <div class="rounded-full icon-thai h-12 w-12 mx-auto"></div>
                                 <span>Thai</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
                                 :class="[selectedCategory == 'Sushi' ? 'selected-grid-item' : '']"
-                                @click="selectCategory('Sushi')">
+                                @click="selectedCategory = 'Sushi'">
                                 <div class="rounded-full icon-sushi h-12 w-12 mx-auto"></div>
                                 <span>Sushi</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
                                 :class="[selectedCategory == 'Others' ? 'selected-grid-item' : '']"
-                                @click="selectCategory('Others')">
+                                @click="selectedCategory = 'Others'">
                                 <div class="rounded-full icon-other h-12 w-12 mx-auto"></div>
                                 <span>Others</span>
                             </div>
@@ -121,8 +124,8 @@
                 </transition>
                 <transition name="fade">
                     <fieldset class="absolute w-full mx-auto form-step" v-show="currentStep == 3">
-                            <div class="flex flex-wrap">
-                                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <div class="flex flex-wrap items-center">
+                                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                     <label class="block mb-2" for="ingredients">
                                         Pick an ingredient
                                     </label>
@@ -133,12 +136,39 @@
                                         </div>
                                     </div>
                                 </div>
+                                <button type="button" @click="addIngredient" class="yellow-1 mt-8">
+                                    <i class="material-icons text-5xl">add_circle_outline</i>
+                                </button>
+                            </div>
+                            <div class="w-full mt-6 mb-12 px-3">
+                                <table class="table-auto w-full">
+                                    <thead class="text-left text-lg">
+                                        <th>Name</th>
+                                        <th>Unit</th>
+                                        <th>Cost</th>
+                                        <th>Amount</th>
+                                        <th></th>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-sm p-4 m-2 h-12" v-for="(ingredient, index) in ingredients" :key="ingredient.id">
+                                            <td>[[ ingredient.name ]]</td>
+                                            <td>[[ ingredient.unit ]]</td>
+                                            <td>€[[ ingredient.cost ]] per [[ ingredient.amount ]] [[ ingredient.unit ]]</td>
+                                            <td>
+                                                <input type="number" class="p-2 w-24 rounded" v-model="ingredient.amount_used" @change="updateTotal">
+                                            </td>
+                                            <td>
+                                                <button type="button">
+                                                    <i class="material-icons orange-1" @click="removeIngredient(index)">remove_circle_outline</i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <hr class="border-yellow-1">
                                 <div>
-                                    <ul>
-                                        <li v-for="ingredient in ingredients">
-                                            {{ ingredient }}
-                                        </li>
-                                    </ul>
+                                    <span>Total</span>
+                                    <span class="ml-4">€ [[ total ]]</span>
                                 </div>
                             </div>
                     </fieldset>
@@ -168,24 +198,34 @@
         delimiters: ['[[', ']]'],
         data: {
             name: '',
+            image: '',
             description: '',
-            time: [true, false, false],
+            time: 1,
             selectedCategory: '',
             selectedIngredient: null,
             ingredients: [],
+            total: 0,
             formSteps: [1, 2, 3, 4],
             currentStep: 1,
         },
         methods: {
-            selectTime(n) {
-                this.time = [false, false, false]
-                this.time[n] = true
+            async getIngredientDetails() {
+                const request = await fetch(`/ingredients/${this.selectedIngredient}?json=true`)
+                const data = await request.json()
+                data.amount_used = 0
+                return data
             },
-            selectCategory(c) {
-                this.selectedCategory = c
+            async addIngredient() {
+                this.ingredients.push(await this.getIngredientDetails())
             },
-            addIngredient() {
-                this.ingredients.push(this.selectedIngredient)
+            removeIngredient(index) {
+                this.ingredients.splice(index, 1)
+                this.updateTotal()
+            },
+            updateTotal() {
+                let sum = 0
+                this.ingredients.forEach(i => sum+=(i.amount_used * i.cost) / i.amount)
+                this.total = sum
             },
             previousStep() {
                 if(this.currentStep > 1) this.currentStep--
