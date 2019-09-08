@@ -35,11 +35,10 @@
             <div class="my-0 mx-auto">
                 <h1 class="pt-6 text-3xl w-3/5 mx-auto font-bold">Yay, we love food! Tell us more about this secret recipe.</h1>
             </div>
-            <form class="mt-12 w-3/5 mx-auto relative">
-                {% csrf_token %}
+            <div class="mt-8 w-3/5 mx-auto relative">
                 <transition name="fade">
                     <fieldset class="absolute flex form-step w-full" v-show="currentStep == 1">
-                        <div class="mb-12 flex items-end">
+                        <div class="mb-6 flex items-end">
                             <div class="w-1/2">
                                 <label class="block mb-2" for="name">Name</label>
                                 <input class="p-2 text-sm rounded-sm w-48" type="text" name="name" placeholder="Recipe's name" v-model="name">
@@ -52,6 +51,31 @@
                                     </label>
                                     <input class="p-2 text-sm rounded-sm w-48" type="url" name="image" placeholder="Image URL" v-model="image">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="w-full my-4 flex items-center justify-between">
+                            <div class="w-1/2 flex">
+                                <label for="servings" class="mb-2">Servings</label>
+                                <div class="h-8 ml-4">
+                                    <i class="material-icons text-center orange-1">
+                                        person
+                                    </i>
+                                    <i class="material-icons text-center orange-1" :class="[ servings > 1 ? 'opacity-100' : 'opacity-25'  ]">
+                                        person
+                                    </i>
+                                    <i class="material-icons text-center orange-1" :class="[ servings > 2 ? 'opacity-100' : 'opacity-25'  ]">
+                                        person
+                                    </i>
+                                    <i class="material-icons text-center orange-1" :class="[ servings > 3 ? 'opacity-100' : 'opacity-25'  ]">
+                                        person
+                                    </i>
+                                    <i class="material-icons text-center orange-1" :class="[ servings > 4 ? 'opacity-100' : 'opacity-25'  ]">
+                                        add
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="w-1/2 text-center">
+                                <input v-model="servings" @input="changeServings" name="servings" type="range" min="1" max="5" class="appearance-none w-48 h-1 bg-white outline-none slider">
                             </div>
                         </div>
                         <div class="mb-10">
@@ -72,50 +96,50 @@
                     <fieldset class="absolute w-full mx-auto form-step" v-show="currentStep == 2">
                         <div class="w-full bg-orange-200 flex flex-wrap justify-center">
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
-                                :class="[selectedCategory == 'Pizza' ? 'selected-grid-item' : '']"
-                                @click="selectedCategory = 'Pizza'">
+                                :class="[category == 'Pizza' ? 'selected-grid-item' : '']"
+                                @click="category = 'Pizza'">
                                 <div class="rounded-full icon-pizza h-12 w-12 mx-auto"></div>
                                 <span>Pizza</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
-                                :class="[selectedCategory == 'Asian' ? 'selected-grid-item' : '']"
-                                @click="selectedCategory = 'Asian'">
+                                :class="[category == 'Asian' ? 'selected-grid-item' : '']"
+                                @click="category = 'Asian'">
                                 <div class="rounded-full icon-asian h-12 w-12 mx-auto"></div>
                                 <span>Asian</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
-                                :class="[selectedCategory == 'Burgers' ? 'selected-grid-item' : '']"
-                                @click="selectedCategory = 'Burgers'">
+                                :class="[category == 'Burgers' ? 'selected-grid-item' : '']"
+                                @click="category = 'Burgers'">
                                 <div class="rounded-full icon-burgers h-12 w-12 mx-auto"></div>
                                 <span>Burgers</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
-                                :class="[selectedCategory == 'BBQ' ? 'selected-grid-item' : '']"
-                                @click="selectedCategory = 'BBQ'">
+                                :class="[category == 'BBQ' ? 'selected-grid-item' : '']"
+                                @click="category = 'BBQ'">
                                 <div class="rounded-full icon-barbecue h-12 w-12 mx-auto"></div>
                                 <span>BBQ</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
-                                :class="[selectedCategory == 'Desserts' ? 'selected-grid-item' : '']"
-                                @click="selectedCategory = 'Desserts'">
+                                :class="[category == 'Desserts' ? 'selected-grid-item' : '']"
+                                @click="category = 'Desserts'">
                                 <div class="rounded-full icon-dessert h-12 w-12 mx-auto"></div>
                                 <span>Desserts</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
-                                :class="[selectedCategory == 'Thai' ? 'selected-grid-item' : '']"
-                                @click="selectedCategory = 'Thai'">
+                                :class="[category == 'Thai' ? 'selected-grid-item' : '']"
+                                @click="category = 'Thai'">
                                 <div class="rounded-full icon-thai h-12 w-12 mx-auto"></div>
                                 <span>Thai</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
-                                :class="[selectedCategory == 'Sushi' ? 'selected-grid-item' : '']"
-                                @click="selectedCategory = 'Sushi'">
+                                :class="[category == 'Sushi' ? 'selected-grid-item' : '']"
+                                @click="category = 'Sushi'">
                                 <div class="rounded-full icon-sushi h-12 w-12 mx-auto"></div>
                                 <span>Sushi</span>
                             </div>
                             <div class="w-1/4 bg-orange-200 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
-                                :class="[selectedCategory == 'Others' ? 'selected-grid-item' : '']"
-                                @click="selectedCategory = 'Others'">
+                                :class="[category == 'Others' ? 'selected-grid-item' : '']"
+                                @click="category = 'Others'">
                                 <div class="rounded-full icon-other h-12 w-12 mx-auto"></div>
                                 <span>Others</span>
                             </div>
@@ -130,7 +154,11 @@
                                         Pick an ingredient
                                     </label>
                                     <div class="relative">
-                                        {{ form.ingredients }}
+                                        <select name="ingredients" class="block appearance-none w-full py-3 px-4 pr-8 rounded bg-white" v-model="selectedIngredient">
+                                            {% for ingredient in ingredients %}
+                                                <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                                            {% endfor %}
+                                        </select>
                                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
                                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                                         </div>
@@ -174,11 +202,35 @@
                     </fieldset>
                 </transition>
                 <transition name="fade">
-                    <fieldset class="absolute mt-12 w-full mx-auto form-step" v-show="currentStep == 4">
-                        Difficulty...
+                    <fieldset class="absolute w-full mx-auto form-step" v-show="currentStep == 4">
+                        <div class="w-full mb-8">
+                            <span class="block mb-2">Instructions</span>
+                            <textarea name="instructions" cols="60" rows="7" class="p-2 w-full" v-model="instructions"></textarea>
+                        </div>
+                        <div class="h-24 w-full">
+                            <span class="block mb-2">Choose a difficulty level</span>
+                            <div class="w-full h-16 bg-white flex justify-around items-center rounded p-4">
+                                <button type="button" class="text-center rounded py-0 px-4 h-12 w-1/5 border border-green-500 hover:border-0 hover:bg-green-500 hover:text-white" 
+                                :class="[ difficulty == 1 ? 'bg-green-500 text-white' : '' ]" @click="difficulty = 1">
+                                    Easy
+                                </button>
+                                <button type="button" class="text-center rounded py-0 px-4 h-12 w-1/5 border border-yellow-500 hover:border-0 hover:bg-yellow-500 hover:text-white"
+                                :class="[ difficulty == 2 ? 'bg-yellow-500 text-white' : '' ]" @click="difficulty = 2">
+                                    Normal
+                                </button>
+                                <button type="button" class="text-center rounded py-0 px-4 h-12 w-1/5 border border-red-500 hover:border-0 hover:bg-red-500 hover:text-white"
+                                :class="[ difficulty == 3 ? 'bg-red-500 text-white' : '' ]" @click="difficulty = 3">
+                                    Hard
+                                </button>
+                                <button type="button" class="text-center rounded py-0 px-4 h-12 w-1/5 border border-black hover:border-0 hover:bg-black hover:text-white"
+                                :class="[ difficulty == 4 ? 'bg-black text-white' : '' ]" @click="difficulty = 4">
+                                    Expert
+                                </button>
+                            </div>
+                        </div>
                     </fieldset>
                 </transition>
-            </form>
+            </div>
             <div class="flex justify-around py-4 bg-white absolute bottom-0 w-full">
                 <button class="px-8 py-3 rounded-full bg-white border border-yellow-1 hover:text-white hover-bg-yellow-1 focus:outline-none active:outline-none" @click="previousStep">Back</button>
                 <button class="px-8 py-3 rounded-full text-white bg-yellow-1 focus:outline-none active:outline-none" @click="nextStep">
@@ -201,9 +253,12 @@
             image: '',
             description: '',
             time: 1,
-            selectedCategory: '',
+            category: '',
+            servings: 1,
             selectedIngredient: null,
             ingredients: [],
+            instructions: '',
+            difficulty: null,
             total: 0,
             formSteps: [1, 2, 3, 4],
             currentStep: 1,
@@ -215,8 +270,13 @@
                 data.amount_used = 0
                 return data
             },
+            hasIngredient() {
+                return this.ingredients.filter(i => i.id == this.selectedIngredient).length > 0 ? true : false
+            },
             async addIngredient() {
-                this.ingredients.push(await this.getIngredientDetails())
+                if(!this.hasIngredient()) {
+                    this.ingredients.push(await this.getIngredientDetails())
+                }
             },
             removeIngredient(index) {
                 this.ingredients.splice(index, 1)
@@ -232,6 +292,28 @@
             },
             nextStep() {
                 if(this.currentStep < 4) this.currentStep++
+                else this.submitForm()
+            },
+            async submitForm() {
+                const data = {
+                    "name": this.name,
+                    "image": this.image,
+                    "description": this.description,
+                    "category": this.category,
+                    "servings": this.servings,
+                    "time": this.time,
+                    "ingredients": this.ingredients,
+                    "instructions": this.instructions,
+                    "difficulty": this.difficulty,
+                }
+                const request = await fetch('/recipes/create', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
             }
         }
     })

@@ -1,13 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.template.loader import render_to_string
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
-from .models import Recipe, Ingredient, FoodCategory
+from .models import Recipe, Ingredient, FoodCategory, RecipeIngredient
 
 from .forms import RecipeForm
 
+import json
 
 def index(request):
     # FoodCategory.objects.all().delete()
@@ -41,12 +42,38 @@ def search(request):
     return render(request, 'cookbook/search_results.html', {'recipes': recipes, 'ingredients': ingredients})
 
 
-
 # Recipes
 
-class RecipeCreate(CreateView):
-    form_class = RecipeForm
-    template_name = 'cookbook/recipes/recipe_create.html'
+def recipe_create(request):
+    if request.method == 'GET':
+        ingredients = Ingredient.objects.all()
+        return render(
+            request,
+            'cookbook/recipes/recipe_create.html',
+            {'ingredients': ingredients}
+        )
+    form_data = json.loads(request.body)
+    category = FoodCategory.objects.get(name=form_data['category'])
+    new_recipe = Recipe(
+        name=form_data['name'],
+        image=form_data['image'],
+        description=form_data['description'],
+        servings=form_data['servings'],
+        category=category,
+        time=form_data['time'],
+        instructions=form_data['instructions'],
+        difficulty=form_data['difficulty']
+    )
+    new_recipe.save()
+    for ingredient in form_data['ingredients']:
+        used_ingredient = Ingredient.objects.get(id=ingredient['id'])
+        ri = RecipeIngredient(
+            recipe=new_recipe,
+            ingredient=used_ingredient,
+            amount_used=ingredient['amount_used']
+        )
+        ri.save()
+    return redirect(new_recipe)
 
 
 class RecipeDelete(DeleteView):
@@ -66,6 +93,7 @@ class RecipeList(ListView):
 class RecipeUpdate(UpdateView):
     form_class = RecipeForm
     template_name = 'cookbook/recipes/recipe_edit.html'
+
 
 # Ingredients
 

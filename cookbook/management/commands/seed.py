@@ -21,6 +21,7 @@ class Command(BaseCommand):
             'Desserts',
             'Thai',
             'Sushi',
+            'Others',
         ]
 
         for category in default_categories:

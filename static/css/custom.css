@@ -228,3 +228,21 @@ opacity: 0;
     border-color: rgb(251, 213, 106);
     transform: scale(1.1);
 }
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 16px; /* Set a specific slider handle width */
+    height: 16px; /* Slider handle height */
+    background: rgb(249, 109, 67); /* Green background */
+    border-radius: 100%;
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+.slider::-moz-range-thumb {
+    width: 16px; /* Set a specific slider handle width */
+    height: 16px; /* Slider handle height */
+    background: rgb(249, 109, 67); /* Green background */
+    border-radius: 100%;
+    cursor: pointer; /* Cursor on hover */
+}

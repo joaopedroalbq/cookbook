@@ -20,8 +20,10 @@ class RecipeForm(ModelForm):
         fields = (
             'name',
             'image',
-            'difficulty',
+            'description',
             'category',
             'ingredients',
+            'instructions',
+            'difficulty',
             'time',
         )
