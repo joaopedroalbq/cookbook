@@ -15,11 +15,11 @@
     <div class="mt-12 w-full">
         <div class="flex justify-between w-4/5">
             <h1 class="text-2xl">Recipes 🍲</h1>
-            <button class="flex-end rounded-full bg-orange-1 inline-flex items-center p-2 text-sm">
+            <!-- <button class="flex-end rounded-full bg-orange-1 inline-flex items-center p-2 text-sm">
                 <i class="tiny material-icons">access_time</i>
                 <span class="mx-2">Latest</span>
                 <i class="tiny material-icons">keyboard_arrow_down</i>
-            </button>
+            </button> -->
         </div>
         <div class="mt-10 filter w-4/5">
             <div class="flex justify-between" style="height: 120px;">
@@ -71,12 +71,13 @@
             </div>
         </div>
         <div class="recipe-list my-16 w-4/5">
-            <ul class="flex justify-around">
+            <ul class="flex flex-wrap justify-between">
                 {% for recipe in recipes %}
-                <li>
+                <li class="w-2/5 my-4">
                     <a href="{% url 'recipe_details' pk=recipe.id %}">
                         <div class="overflow-hidden">
-                            <div class="relative list-image">
+                            <div class="relative">
+                                <img class="list-image object-cover" src="{{ recipe.image }}" alt="">
                                 <div class="inline-block absolute bottom-0 bg-gray-100 p-2 rounded-tr-lg text-sm font-bold">
                                     <span>{{ recipe.get_time }}</span>
                                 </div>

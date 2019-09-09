@@ -1,9 +1,10 @@
-<ul>
-    {% for ingredient in ingredients %}
-        <li class="underline search-result">
-            <a href="{% url 'ingredient_details' pk=ingredient.id %}">
-                {{ ingredient.name }}
-            </a>
-        </li>
-    {% endfor %}
-</ul>
+{% extends "cookbook/base.html" %}
+
+{% block content %}
+    <div class="my-8">
+        <h2 class="text-3xl">Ingredients registered in our database</h2>
+    </div>
+    
+    {% include 'cookbook/ingredients/ingredient_list_partial.html' %}
+
+{% endblock content %}

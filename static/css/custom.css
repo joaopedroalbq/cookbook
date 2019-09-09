@@ -179,7 +179,6 @@ body {
     height: 200px;
     width: 344px;
     background-image: url('https://d1ralsognjng37.cloudfront.net/3351c58b-b144-4fa6-be1d-8c763d721155');
-    background-size: cover;
     background-position: center;
 }
 
@@ -245,4 +244,9 @@ opacity: 0;
     background: rgb(249, 109, 67); /* Green background */
     border-radius: 100%;
     cursor: pointer; /* Cursor on hover */
+}
+
+#deleteModal {
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
 }

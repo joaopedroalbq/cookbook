@@ -1,0 +1,111 @@
+{% extends "cookbook/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="my-24 p-4 w-full bg-orange-100 relative border-yellow-1 border">
+        <a href="{% url 'ingredient_list' %}" class="absolute top-0 left-0 p-2">
+            <i class="material-icons">arrow_left</i>
+            Back
+        </a>
+        <div class="flex justify-end items-center absolute top-0 right-0">
+            <a href="{% url 'ingredient_update' pk=ingredient.id%}" class="p-1 bg-yellow-1 hover:bg-yellow-500">
+                <i class="material-icons">edit</i>
+            </a>
+            <button type="button" onclick="openModal()" class="p-1 bg-red-500 hover:bg-red-600">
+                <i class="material-icons">delete</i>
+            </button>
+        </div>
+        <div class="mx-auto p-8 flex justify-between">
+            <div>
+                <h1 class="text-4xl">{{ ingredient.name }}</h1>
+                <p class="text-lg my-1">Article Number: <span class="text-xl">{{ ingredient.article_number }}</span></p>
+                <p class="text-lg my-1">Cost: €{{ ingredient.cost }} per {{ ingredient.amount }} {{ ingredient.unit }}</p>
+                <p class="text-lg my-1">This ingredient is being used on {{ times_used }} recipes</p>
+            </div>
+            <div class="w-1/3">
+                <canvas height="280" width="280"></canvas>
+            </div>
+        </div>
+        {% if recipes %}
+            <div class="mx-auto p-8">
+                <h4 class="text-xl mb-2">Some recipes that use this ingredient:</h4>
+                {% include 'cookbook/recipes/recipe_list_partial.html' %}
+            </div>
+        {% else %}
+            <div class="mx-auto p-8">
+                <h4 class="text-xl mb-8">This ingredient is not being used by any recipes yet.</h4>
+            </div>
+        {% endif %}
+    </div>
+    <div id="deleteModal" class="hidden fixed left-0 top-0 w-full h-full overflow-auto bg-black">
+        <div class="bg-white my-24 mx-auto p-8 w-1/3 h-48">
+            <button class="float-right" onclick="closeModal()">
+                <i class="material-icons">close</i>
+            </button>
+            <p>Are you sure you want to do this?</p>
+            <form action="{% url 'ingredient_delete' pk=ingredient.id %}" method="POST" class="w-full flex items-center justify-between mt-12">
+                {% csrf_token %}
+                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border-green-700 rounded" type="button" onclick="closeModal()">
+                    No, go back
+                </button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border-red-700 rounded" type="submit">
+                    Yes, delete it
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script>
+        const modal = document.getElementById("deleteModal");
+        const openModal = () => modal.classList.remove('hidden')
+        const closeModal = () => modal.classList.add('hidden')
+        window.onclick = (event) => {
+            if (event.target == modal)
+                closeModal()
+        }
+
+        var ctx = document.querySelector('canvas').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [
+                        {{ categories_count.Pizza }},
+                        {{ categories_count.Asian }},
+                        {{ categories_count.Burgers }},
+                        {{ categories_count.Barbecue }},
+                        {{ categories_count.Desserts }},
+                        {{ categories_count.Thai }},
+                        {{ categories_count.Sushi }},
+                        {{ categories_count.Others }},
+                    ],
+                    backgroundColor: [
+                        '#ec64a5',
+                        '#685cb0',
+                        '#ff7d41',
+                        '#3090f0',
+                        '#ec6464',
+                        '#98df58',
+                        '#24dbd4',
+                        '#f9dd51',
+                    ]
+                }],
+                labels: [
+                    'Pizza',
+                    'Asian',
+                    'Burgers',
+                    'Barbecue',
+                    'Desserts',
+                    'Thai',
+                    'Sushi',
+                    'Others',
+                ],
+            },
+            options: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        });
+    </script>
+{% endblock content %}
