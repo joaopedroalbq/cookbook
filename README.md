@@ -5,6 +5,9 @@ A small Recipe Manager application in Django (Python) in which you can create in
 [CHECK THE LIVE VERSION HERE](https://cookbook-apicbase-assignment.herokuapp.com/)
 
 
+![Project's homepage](cookbook.jpg)
+
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
