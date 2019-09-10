@@ -2,10 +2,10 @@
 {% load staticfiles %}
 
 {% block content %}
-    <div class="my-24 p-4 w-full bg-orange-100 relative border-yellow-1 border">
-        <a href="{% url 'ingredient_list' %}" class="absolute top-0 left-0 p-2">
-            <i class="material-icons">arrow_left</i>
-            Back
+    <div class="my-24 p-4 w-full bg-orange-100 relative border">
+        <a href="{% url 'ingredient_list' %}" class="absolute top-0 left-0 p-2 flex items-center">
+            <i class="material-icons orange-1">arrow_back</i>
+            <span class="underline">Back</span>
         </a>
         <div class="flex justify-end items-center absolute top-0 right-0">
             <a href="{% url 'ingredient_update' pk=ingredient.id%}" class="p-1 bg-yellow-1 hover:bg-yellow-500">
@@ -28,7 +28,7 @@
         </div>
         {% if recipes %}
             <div class="mx-auto p-8">
-                <h4 class="text-xl mb-2">Some recipes that use this ingredient:</h4>
+                <h4 class="text-xl mb-8">Some recipes that use this ingredient:</h4>
                 {% include 'cookbook/recipes/recipe_list_partial.html' %}
             </div>
         {% else %}
@@ -64,8 +64,8 @@
                 closeModal()
         }
 
-        var ctx = document.querySelector('canvas').getContext('2d');
-        var myChart = new Chart(ctx, {
+        const ctx = document.querySelector('canvas').getContext('2d')
+        const myChart = new Chart(ctx, {
             type: 'pie',
             data: {
                 datasets: [{
@@ -106,6 +106,6 @@
                     position: 'bottom'
                 }
             }
-        });
+        })
     </script>
 {% endblock content %}

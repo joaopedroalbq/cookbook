@@ -1,12 +1,16 @@
 {% extends "cookbook/base.html" %}
 
 {% block content %}
-    <div class="mt-24 p-12 flex justify-between bg-orange-200 rounded-lg relative">
+    <div class="mt-24 p-12 flex justify-between bg-orange-100 rounded-lg relative">
+        <a href="{% url 'recipe_list' %}" class="absolute left-0 top-0 p-2 text-sm flex items-center">
+            <i class="material-icons orange-1">arrow_back</i>
+            <span class="mr-1 underline">Back</span>
+        </a>
         <button class="absolute right-0 top-0 p-2 text-sm flex items-center" onclick="openModal()">
             <i class="material-icons orange-1">delete_forever</i>
             <span class="mr-1 underline">Delete recipe</span>
         </button>
-        <a href="#" class="absolute right-0 top-0 p-2 text-sm flex items-center mr-32">
+        <a href="{% url 'recipe_update' pk=recipe.id %}" class="absolute right-0 top-0 p-2 text-sm flex items-center mr-32">
             <i class="material-icons orange-1">edit</i>
             <span class="mr-1 underline">Change recipe</span>
         </a>
@@ -27,7 +31,7 @@
         </ul>
         <img src="{{ recipe.image }}" alt="" class="w-1/2 rounded-lg object-cover">
     </div>
-    <article class="-mt-4 rounded-full h-32 w-full bg-white p-8">
+    <article class="rounded-full h-32 w-full bg-white p-8">
         <section class="mb-8">
             <h2 class="text-xl font-bold mb-4">Description</h2>
             <p>{{ recipe.description }}</p>

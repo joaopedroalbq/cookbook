@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ModelChoiceField, Select
+from django.forms import ModelForm, ModelChoiceField, Select, CharField, IntegerField, TextInput, NumberInput
 
 from .models import Recipe, Ingredient, FoodCategory
 
@@ -26,4 +26,22 @@ class RecipeForm(ModelForm):
             'instructions',
             'difficulty',
             'time',
+        )
+
+
+class IngredientForm(ModelForm):
+    name = CharField(widget=TextInput(attrs={'class': 'p-2'}))
+    article_number = CharField(widget=TextInput(attrs={'class': 'p-2'}))
+    amount = IntegerField(widget=NumberInput(attrs={'class': 'p-2'}))
+    cost = IntegerField(widget=NumberInput(attrs={'class': 'p-2'}))
+
+
+    class Meta:
+        model = Ingredient
+        fields = (
+            'name',
+            'article_number',
+            'unit',
+            'amount',
+            'cost',
         )

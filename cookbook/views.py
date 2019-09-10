@@ -2,12 +2,11 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponse
-from django.urls import reverse_lazy
-from django.db.models import Q, Count
+from django.urls import reverse_lazy, reverse
 
 from .models import Recipe, Ingredient, FoodCategory, RecipeIngredient
 
-from .forms import RecipeForm
+from .forms import RecipeForm, IngredientForm
 
 import json
 
@@ -41,7 +40,14 @@ def search(request):
 
         return JsonResponse(data=data_dict, safe=False)
 
-    return render(request, 'cookbook/search_results.html', {'recipes': recipes, 'ingredients': ingredients})
+    return render(
+                request,
+                'cookbook/search_results.html',
+                {
+                    'recipes': recipes,
+                    'ingredients': ingredients
+                }
+            )
 
 
 # Recipes
@@ -50,7 +56,7 @@ class RecipeCreate(CreateView):
     form_class = RecipeForm
     template_name = 'cookbook/recipes/recipe_create.html'
     model = Recipe
-    success_url = reverse_lazy('index_page')
+    success_url = reverse_lazy('recipe_list')
 
     def post(self, request):
         form_data = json.loads(request.body)
@@ -79,7 +85,7 @@ class RecipeCreate(CreateView):
 
 class RecipeDelete(DeleteView):
     model = Recipe
-    success_url = reverse_lazy('index_page')
+    success_url = reverse_lazy('recipe_list')
 
 
 class RecipeDetail(DetailView):
@@ -95,18 +101,61 @@ class RecipeList(ListView):
 
 
 class RecipeUpdate(UpdateView):
+    model = Recipe
     form_class = RecipeForm
     template_name = 'cookbook/recipes/recipe_edit.html'
+
+    def post(self, request, *args, **kwargs):
+        form_data = json.loads(request.body)
+        category = FoodCategory.objects.get(name=form_data['category'])
+        recipe = Recipe.objects.get(id=form_data['id'])
+        recipe.name = form_data['name']
+        if recipe.name == '':
+            return JsonResponse(
+                {
+                    'message': 'You must provide a name for the recipe',
+                    'status': 400
+                }
+            )
+        recipe.image = form_data['image']
+        recipe.description = form_data['description']
+        recipe.servings = form_data['servings']
+        recipe.category = category
+        recipe.time = form_data['time']
+        recipe.instructions = form_data['instructions']
+        recipe.difficulty = form_data['difficulty']
+        recipe.save()
+        for ingredient in form_data['ingredients']:
+            used_ingredient = Ingredient.objects.get(id=ingredient['id'])
+            ri = RecipeIngredient.objects.get(
+                recipe=recipe,
+                ingredient=used_ingredient,
+            )
+            ri.amount_used = ingredient['amount_used']
+            ri.save()
+        return JsonResponse(
+                {
+                    'message': 'Success!',
+                    'status': 200
+                }
+            )
 
 
 # Ingredients
 
 class IngredientCreate(CreateView):
     model = Ingredient
+    success_url = reverse_lazy('ingredient_list')
+    form_class = IngredientForm
+    template_name = 'cookbook/ingredients/ingredient_form.html'
+    extra_context = {'action': 'Create', 'previous_page': 'ingredient_list'}
+
 
 
 class IngredientDelete(DeleteView):
     model = Ingredient
+    success_url = reverse_lazy('ingredient_list')
+    
 
 
 class IngredientDetail(DetailView):
@@ -145,5 +194,10 @@ class IngredientList(ListView):
     context_object_name = 'ingredients'
     paginate_by = 20
 
+
 class IngredientUpdate(UpdateView):
     model = Ingredient
+    success_url = reverse_lazy('ingredient_list')
+    form_class = IngredientForm
+    template_name = 'cookbook/ingredients/ingredient_form.html'
+    extra_context = {'action': 'Edit', 'previous_page': 'ingredient_details'}

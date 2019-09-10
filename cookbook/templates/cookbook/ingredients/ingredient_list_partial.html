@@ -1,9 +1,10 @@
 <ul>
     {% for ingredient in ingredients %}
-        <li class="underline search-result">
+        <li class="underline search-result my-2">
             <a href="{% url 'ingredient_details' pk=ingredient.id %}">
                 {{ ingredient.name }}
             </a>
+            <span class="float-right">No. {{ ingredient.article_number }}</span>
         </li>
     {% endfor %}
 </ul>

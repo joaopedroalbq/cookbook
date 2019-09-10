@@ -1,0 +1,38 @@
+{% extends "cookbook/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="w-full mt-24">
+        <form method="POST" class="w-full mx-auto py-4 bg-orange-100 border px-8 relative flex flex-wrap justify-between">
+            {% csrf_token %}
+            {% if action == 'Edit' %}
+                <a href="{% url previous_page pk=ingredient.id %}" class="absolute top-0 left-0 p-2 flex items-center">
+                    <i class="material-icons orange-1">arrow_back</i>
+                    <span class="underline">Back</span>
+                </a>
+            {% else %}
+                <a href="{% url previous_page %}" class="absolute top-0 left-0 p-2 flex items-center">
+                    <i class="material-icons orange-1 text-sm">arrow_back</i>
+                    <span class="underline">Back</span>
+                </a>
+            {% endif %}
+            <div>
+                <h1 class="text-2xl mt-6">{{ action }} an ingredient</h1>
+                <img src="{% static 'img/undraw_eating_together.svg' %}" class="mt-6" width="250" height="250" alt="">
+            </div>
+            <div class="w-2/3 flex flex-wrap">
+                {% for field in form %}
+                    <div class="w-1/2 my-2">
+                        <label for="{{ field.id_for_label }}" class="block mb-2 text-lg">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <div class="w-full mt-8">
+                    <button type="submit" class="bg-yellow-1 py-2 px-4 mx-auto hover:bg-yellow-600 rounded">
+                            Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

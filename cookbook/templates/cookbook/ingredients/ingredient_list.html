@@ -1,8 +1,12 @@
 {% extends "cookbook/base.html" %}
 
 {% block content %}
-    <div class="my-8">
-        <h2 class="text-3xl">Ingredients registered in our database</h2>
+    <div class="my-8 flex justify-between items-center">
+        <h2 class="text-3xl inline">Ingredients registered in our database</h2>
+        <a href="{% url 'ingredient_create' %}" class="text-lg flex items-center">
+            <i class="material-icons orange-1">add</i>
+            <span class="underline">Add a new ingredient</span>
+        </a>
     </div>
     
     {% include 'cookbook/ingredients/ingredient_list_partial.html' %}
