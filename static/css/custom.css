@@ -173,8 +173,9 @@ body {
 .list-image {
     border-radius: 16px;
     height: 200px;
-    width: 344px;
-    background-image: url('https://d1ralsognjng37.cloudfront.net/3351c58b-b144-4fa6-be1d-8c763d721155');
+    width: 256px;
+    background-image: url('http://uniplant.com/sites/default/files/default_images/noimg_0.jpg');
+    background-size: cover;
     background-position: center;
 }
 

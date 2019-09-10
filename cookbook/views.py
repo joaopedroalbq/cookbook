@@ -13,16 +13,7 @@ import json
 
 
 def index(request):
-    # FoodCategory.objects.all().delete()
-    # Ingredient.objects.all().delete()
-    # Recipe.objects.all().delete()
-    categories = FoodCategory.objects.all()
-    ingredients = Ingredient.objects.all()
-    recipes = Recipe.objects.all()
-    # print(categories)
-    # print(ingredients)
-    # print(recipes)
-    return render(request, 'cookbook/index.html', {'recipes': recipes})
+    return render(request, 'cookbook/index.html')
 
 
 def search(request):

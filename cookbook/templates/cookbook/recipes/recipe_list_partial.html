@@ -1,10 +1,14 @@
 <ul class="flex flex-wrap">
     {% for recipe in recipes %}
-        <li class="mx-auto w-1/4">
+        <li class="m-4 w-1/4">
             <a href="{% url 'recipe_details' pk=recipe.id %}">
                 <div class="overflow-hidden">
                     <div class="relative">
-                        <img src="{{ recipe.image }}" alt="{{ recipe.name }} image" class="list-image object-cover">
+                        {% if recipe.image == '' %}
+                            <img class="list-image object-cover">
+                        {% else %}
+                            <img src="{{ recipe.image }}" alt="{{ recipe.name }} image" class="list-image object-cover">
+                        {% endif %}
                         <div class="inline-block absolute bottom-0 bg-gray-100 p-2 rounded-tr-lg text-sm font-bold">
                             <span>{{ recipe.get_time }}</span>
                         </div>
@@ -32,11 +36,11 @@
                             <span>{{ recipe.category.name }}</span>
                             <span>·</span>
                             {% if recipe.get_overral_cost <= 10 %}
-                                <span>$</span>
+                                <span>€</span>
                             {% elif recipe.get_overral_cost > 10 and recipe.get_overral_cost < 30 %}
-                                <span>$$</span>
+                                <span>€€</span>
                             {% elif recipe.get_overral_cost > 30 %}
-                                <span>$$$</span>
+                                <span>€€€</span>
                             {% endif %}
                         </div>
                     </div>

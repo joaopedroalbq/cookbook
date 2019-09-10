@@ -87,8 +87,8 @@
                     <span>Burgers</span>
                 </div>
                 <div class="w-1/4 m-2 flex flex-col items-center pt-4 form-grid-item cursor-pointer" 
-                    :class="[category == 'BBQ' ? 'selected-grid-item' : '']"
-                    @click="category = 'BBQ'">
+                    :class="[category == 'Barbecue' ? 'selected-grid-item' : '']"
+                    @click="category = 'Barbecue'">
                     <div class="rounded-full icon-barbecue h-12 w-12 mx-auto"></div>
                     <span>BBQ</span>
                 </div>
@@ -232,9 +232,7 @@
             ],
             instructions: `{{ recipe.instructions }}`,
             difficulty: {{ recipe.difficulty }},
-            total: 0,
-            formSteps: [1, 2, 3, 4],
-            currentStep: 1,
+            total: 0
         },
         methods: {
             async getIngredientDetails() {
@@ -279,7 +277,9 @@
                     if(content.status != 200) {
                         throw Error(content.message)
                     }
-                    else return response
+                    else {
+                        window.location.href = `/recipes/${this.id}`
+                    }
                 }
 
                 const request = await fetch(`/recipes/${this.id}/update`, {
@@ -291,8 +291,6 @@
                     body: JSON.stringify(data)
                 })
                     .then(handleErrors)
-                    .then(response => response.json())
-                    .then(json => window.location.href = `/recipes/${json.new_recipe_id}`)
                     .catch(error => alert(error))
             }
         },

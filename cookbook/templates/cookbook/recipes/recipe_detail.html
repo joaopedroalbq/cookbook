@@ -29,7 +29,12 @@
                 <span>{{ recipe.get_overral_cost }}</span>
             </li>
         </ul>
-        <img src="{{ recipe.image }}" alt="" class="w-1/2 rounded-lg object-cover">
+        {% if recipe.image == '' %}
+            <img src="http://uniplant.com/sites/default/files/default_images/noimg_0.jpg" class="w-1/2 rounded-lg object-cover">
+        {% else %}
+            <img src="{{ recipe.image }}" alt="" class="w-1/2 rounded-lg object-cover">
+        {% endif %}
+        
     </div>
     <article class="rounded-full h-32 w-full bg-white p-8">
         <section class="mb-8">

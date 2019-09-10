@@ -5,13 +5,9 @@ import random
 
 
 class Command(BaseCommand):
-    help = 'Feeds the database with default values'
+    help = 'Feeds the database with some data'
 
     def handle(self, *args, **options):
-
-        FoodCategory.objects.all().delete()
-        Ingredient.objects.all().delete()
-        Recipe.objects.all().delete()
 
         default_categories = [
             'Pizza',
