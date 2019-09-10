@@ -25,7 +25,7 @@ SECRET_KEY = '-)dq=--yi8xt=8y2d9_o$8c=gz^#1)$bxk!-e2c@3&ul&yhsk^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'cookbook-apicbase-assignment.herokuapp.com']
 
 
 # Application definition
