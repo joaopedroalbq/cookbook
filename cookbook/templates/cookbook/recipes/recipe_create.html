@@ -302,6 +302,15 @@
                     "instructions": this.instructions,
                     "difficulty": this.difficulty,
                 }
+
+                const handleErrors = async (response) => {
+                    const content = await response.json()
+                    if(content.status != 200) {
+                        throw Error(content.message)
+                    }
+                    else return response
+                }
+
                 const request = await fetch('/recipes/create', {
                     method: 'POST',
                     headers: {
@@ -310,6 +319,9 @@
                     },
                     body: JSON.stringify(data)
                 })
+                    .then(handleErrors)
+                    .then(response => window.location.href = `/recipes/${this.id}`)
+                    .catch(error => alert(error))
             }
         }
     })

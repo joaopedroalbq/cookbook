@@ -115,10 +115,6 @@ body {
     background-color: rgb(251, 213, 106);
 }
 
-.filter-active div{
-    border: none;
-}
-
 .icon-all {
     background: url('/static/img/food-icons.jpg');
     background-size: 486px 386px;

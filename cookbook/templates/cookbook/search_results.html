@@ -2,15 +2,15 @@
 {% load staticfiles %}
 
 {% block content %}
-    <div class="mt-12 w-full relative">
-        <h2 class="my-4 text-xl">Recipes</h2>
+    <div class="my-12 w-full relative">
+        <h2 class="my-4 text-2xl">Recipes</h2>
         {% if recipes %}
             {% include 'cookbook/recipes/recipe_list_partial.html' %}
         {% else %}
             <p>No results.</p>
         {% endif %}
-        <hr>
-        <h2 class="my-4 text-xl">Ingredients</h2>
+        <hr class="my-16">
+        <h2 class="my-4 text-2xl">Ingredients</h2>
         {% if ingredients %}
             {% include 'cookbook/ingredients/ingredient_list_partial.html' %}
         {% else %}

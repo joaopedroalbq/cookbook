@@ -3,6 +3,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView, U
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponse
 from django.urls import reverse_lazy, reverse
+from django.db.models import Q
 
 from .models import Recipe, Ingredient, FoodCategory, RecipeIngredient
 
@@ -28,7 +29,9 @@ def search(request):
     is_json = request.GET.get('json')
     search_parameter = request.GET.get('q')
     recipes = Recipe.objects.filter(name__icontains=search_parameter)
-    ingredients = Ingredient.objects.filter(name__icontains=search_parameter)
+    ingredients = Ingredient.objects.filter(
+        Q(name__icontains=search_parameter) | Q(article_number__icontains=search_parameter)
+    )
 
     if is_json == 'true':
         html = render_to_string(
@@ -38,7 +41,7 @@ def search(request):
 
         data_dict = {"html_from_view": html}
 
-        return JsonResponse(data=data_dict, safe=False)
+        return JsonResponse(data=data_dict)
 
     return render(
                 request,
@@ -52,6 +55,28 @@ def search(request):
 
 # Recipes
 
+def recipes_index_filter(request, *args, **kwargs):
+    search_parameter = kwargs['category']
+    if search_parameter == 'All':
+        category = FoodCategory.objects.all()
+    else:
+        category = [FoodCategory.objects.get(name=search_parameter)]
+    recipes = []
+    for recipe in Recipe.objects.filter(category__in=category):
+        recipes.append(
+            {
+                'id': recipe.id,
+                'name': recipe.name,
+                'time': recipe.get_time(),
+                'difficulty': recipe.difficulty,
+                'category': recipe.category.name,
+                'cost': recipe.get_overral_cost(),
+                'image': recipe.image,
+            }
+        )
+    return JsonResponse(data={'recipes': recipes})
+
+
 class RecipeCreate(CreateView):
     form_class = RecipeForm
     template_name = 'cookbook/recipes/recipe_create.html'
@@ -61,6 +86,13 @@ class RecipeCreate(CreateView):
     def post(self, request):
         form_data = json.loads(request.body)
         category = FoodCategory.objects.get(name=form_data['category'])
+        if form_data['name'] == '':
+            return JsonResponse(
+                {
+                    'message': 'You must provide a name for the recipe',
+                    'status': 400
+                }
+            )
         new_recipe = Recipe(
             name=form_data['name'],
             image=form_data['image'],
@@ -80,7 +112,13 @@ class RecipeCreate(CreateView):
                 amount_used=ingredient['amount_used']
             )
             ri.save()
-        return redirect(new_recipe)
+        return JsonResponse(
+                {
+                    'message': 'Success!',
+                    'new_recipe_id': new_recipe.id,
+                    'status': 200
+                }
+            )
 
 
 class RecipeDelete(DeleteView):

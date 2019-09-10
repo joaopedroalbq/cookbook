@@ -32,8 +32,8 @@ class RecipeForm(ModelForm):
 class IngredientForm(ModelForm):
     name = CharField(widget=TextInput(attrs={'class': 'p-2'}))
     article_number = CharField(widget=TextInput(attrs={'class': 'p-2'}))
-    amount = IntegerField(widget=NumberInput(attrs={'class': 'p-2'}))
-    cost = IntegerField(widget=NumberInput(attrs={'class': 'p-2'}))
+    amount = IntegerField(widget=NumberInput(attrs={'class': 'p-2', 'min': '1'}))
+    cost = IntegerField(widget=NumberInput(attrs={'class': 'p-2', 'min': '0'}))
 
 
     class Meta:
